@@ -1,5 +1,4 @@
 // Wardrobe MFG — WhatsApp bot as a Cloudflare Worker (single file)
-// Same logic/knowledge as the Node version (server.js + bot.js + knowledge.js).
 // Required Worker variables/secrets:
 //   WHATSAPP_TOKEN       (secret)  — token from Meta WhatsApp API Setup
 //   PHONE_NUMBER_ID      (plain)   — e.g. 1424465564079290
@@ -197,7 +196,6 @@ export default {
     }
 
     if (url.pathname === "/webhook") {
-      // Meta verification
       if (request.method === "GET") {
         const mode = url.searchParams.get("hub.mode");
         const token = url.searchParams.get("hub.verify_token");
@@ -209,11 +207,17 @@ export default {
         return new Response("Forbidden", { status: 403 });
       }
 
-      // Incoming messages
       if (request.method === "POST") {
+        // FIX: read the body BEFORE returning any response.
+        let body = null;
+        try {
+          body = await request.json();
+        } catch (err) {
+          console.error("Webhook body parse error:", err.message);
+          return new Response("OK", { status: 200 });
+        }
         const work = (async () => {
           try {
-            const body = await request.json();
             const entry = body.entry?.[0];
             const change = entry?.changes?.[0];
             const value = change?.value;
