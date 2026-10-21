@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: wardrobe-mfg-bot
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PHONE_NUMBER_ID
+        value: 1424465564079290
+      - key: WHATSAPP_VERIFY_TOKEN
+        value: wardrobe-verify-2026
+      - key: WHATSAPP_API_VERSION
+        value: v21.0
