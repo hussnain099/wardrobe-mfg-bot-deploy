@@ -2,3 +2,16 @@ name = "wardrobe-mfg-bot"
 main = "worker.js"
 compatibility_date = "2024-11-01"
 workers_dev = true
+
+[vars]
+PHONE_NUMBER_ID = "1424465564079290"
+WHATSAPP_VERIFY_TOKEN = "wardrobe-verify-2026"
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
